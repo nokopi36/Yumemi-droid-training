@@ -5,12 +5,12 @@
 -->
 <data-extraction-rules>
     <cloud-backup>
-        <!-- TODO: Use <include> and <exclude> to control what is backed up.
+        <!-- Nothing for backup
         <include .../>
         <exclude .../>
         -->
     </cloud-backup>
-    <!--
+    <!-- Not supporting device-transfer
     <device-transfer>
         <include .../>
         <exclude .../>
