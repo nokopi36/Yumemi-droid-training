@@ -6,8 +6,8 @@ import android.content.Context
 import android.os.NetworkOnMainThreadException
 import com.squareup.moshi.Moshi
 import jp.co.yumemi.api.model.DateAdapter
-import jp.co.yumemi.api.model.Request
-import jp.co.yumemi.api.model.Response
+import jp.co.yumemi.api.model.WeatherRequest
+import jp.co.yumemi.api.model.WeatherResponse
 import jp.co.yumemi.api.model.Weather
 import kotlinx.coroutines.delay
 import java.util.Date
@@ -32,14 +32,14 @@ class YumemiWeather(
             .add(Date::class.java, DateAdapter())
             .build()
 
-        val requestAdapter = moshi.adapter(Request::class.java)
+        val requestAdapter = moshi.adapter(WeatherRequest::class.java)
         val request = requestAdapter.fromJson(json) ?: throw IllegalArgumentException()
 
-        val responseAdapter = moshi.adapter(Response::class.java)
+        val responseAdapter = moshi.adapter(WeatherResponse::class.java)
 
         val maxTemp = (10..40).random(random)
         val minTemp = (-40..maxTemp).random(random)
-        val response = Response(
+        val response = WeatherResponse(
             weather = fetchThrowsWeather(),
             maxTemp = maxTemp,
             minTemp = minTemp,

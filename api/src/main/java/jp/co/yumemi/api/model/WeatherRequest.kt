@@ -4,10 +4,7 @@ import com.squareup.moshi.JsonClass
 import java.util.Date
 
 @JsonClass(generateAdapter = true)
-internal data class Response(
-    val weather: String,
-    val maxTemp: Int,
-    val minTemp: Int,
-    val date: Date,
+internal data class WeatherRequest(
     val area: String,
+    val date: Date
 )

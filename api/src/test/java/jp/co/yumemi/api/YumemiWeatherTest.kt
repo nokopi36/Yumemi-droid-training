@@ -6,7 +6,7 @@ import com.squareup.moshi.Moshi
 import io.mockk.every
 import io.mockk.mockk
 import jp.co.yumemi.api.model.DateAdapter
-import jp.co.yumemi.api.model.Response
+import jp.co.yumemi.api.model.WeatherResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -76,7 +76,7 @@ class YumemiWeatherTest {
         every { random.nextInt(any(), any()) } returns 0
         every { random.nextInt(any()) } returns 0
         val value = yumemiWeather.fetchJsonWeather(testRequest)
-        val responseAdapter = moshi.adapter(Response::class.java)
+        val responseAdapter = moshi.adapter(WeatherResponse::class.java)
         val response = responseAdapter.fromJson(value)!!
         Truth.assertThat(response.maxTemp).isEqualTo(0)
         Truth.assertThat(response.minTemp).isEqualTo(0)
