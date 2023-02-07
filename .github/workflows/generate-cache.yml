@@ -1,0 +1,48 @@
+name: Generate cache
+
+# デフォルトブランチやマージ先ブランチでgradleとgemのキャッシュを作成(プルリクエストの新規作成時にこのキャッシュが適用される)
+
+on:
+  push:
+    branches:
+      - 'main'
+      - '**/develop'
+
+jobs:
+  generate:
+    name: Generate cache
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Restore gradle cache
+        id: gradle-cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}-${{ hashFiles('**/*.gradle.kts') }}
+      - name: Download dependencies
+        if: steps.gradle-cache.outputs.cache-hit != 'true'
+        run: ./gradlew androidDependencies
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6'
+          architecture: 'x64'
+      - name: Get gem directory path
+        id: gem-dir
+        run: echo "::set-output name=dir::$(gem environment gemdir)"
+      - name: Restore gem cache
+        id: gem-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.gem-dir.outputs.dir }}
+          key: ${{ runner.os }}-gem-danger6.2.0-dangercheckstyleformat0.1.1-dangerandroidlint0.0.8
+      - name: Set up Danger
+        if: steps.gem-cache.outputs.cache-hit != 'true'
+        run: |
+          gem install danger:6.2.0 danger-checkstyle_format:0.1.1 danger-android_lint:0.0.8

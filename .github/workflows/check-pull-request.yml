@@ -1,0 +1,47 @@
+name: Check pull request
+
+on: pull_request
+
+jobs:
+  check:
+    name: Check pull request
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Restore gradle cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}-${{ hashFiles('**/*.gradle.kts') }}
+      - name: Set up Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6'
+          architecture: 'x64'
+      - name: Get gem directory path
+        id: gem-dir
+        run: echo "::set-output name=dir::$(gem environment gemdir)"
+      - name: Restore gem cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.gem-dir.outputs.dir }}
+          key: ${{ runner.os }}-gem-danger6.2.0-dangercheckstyleformat0.1.1-dangerandroidlint0.0.8
+      - name: Run ktlint
+        run: ./gradlew ktlint
+      - name: Run Android Lint
+        run: ./gradlew app:lintRelease api:lintRelease
+      - name: Set up and run Danger
+        if: success() || failure() # Do nothing if canceled
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          gem install danger:6.2.0 danger-checkstyle_format:0.1.1 danger-android_lint:0.0.8
+          danger --remove-previous-comments --fail-on-errors=true
