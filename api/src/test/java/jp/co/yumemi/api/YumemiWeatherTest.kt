@@ -92,14 +92,13 @@ class YumemiWeatherTest {
     fun fetchJsonWeather() {
         every { random.nextInt(any(), any()) } returns 0
         every { random.nextInt(any()) } returns 0
-        val value = yumemiWeather.fetchJsonWeather(testRequest())
-        val responseAdapter = moshi.adapter(WeatherResponse::class.java)
+        val value = yumemiWeather.fetchJsonWeather(testRequest)
+        val responseAdapter = moshi.adapter(Response::class.java)
         val response = responseAdapter.fromJson(value)!!
         Truth.assertThat(response.maxTemp).isEqualTo(0)
         Truth.assertThat(response.minTemp).isEqualTo(0)
         Truth.assertThat(response.weather).isEqualTo("sunny")
     }
-
 
     @Test(expected = NetworkOnMainThreadException::class)
     fun fetchJsonWeatherAsync_mainThreadError() = runTest {
