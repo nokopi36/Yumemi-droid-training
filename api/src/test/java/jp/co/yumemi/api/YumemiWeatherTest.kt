@@ -83,7 +83,6 @@ class YumemiWeatherTest {
         Truth.assertThat(response.weather).isEqualTo("sunny")
     }
 
-
     @Test(expected = NetworkOnMainThreadException::class)
     fun fetchJsonWeatherAsync() = runTest {
         yumemiWeather.fetchJsonWeatherAsync(testRequest)
