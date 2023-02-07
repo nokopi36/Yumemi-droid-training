@@ -1,10 +1,28 @@
 @file:Suppress("UnstableApiUsage")
 
+import org.jetbrains.kotlin.konan.properties.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
 }
+
+// このAPI実装ではOpenWeatherMapを利用します
+// 1 こちらのサイトからAPI keyを取得します https://home.openweathermap.org/api_keys
+// 2 ./apikey.properties にAPI keyを記載します
+//     api_key="${your_api_key}" (double-quotation required!)
+val apiKey: String = project.file("apikey.properties").let {
+    if (it.exists()) {
+        val input = FileInputStream(it)
+        val props = Properties()
+        props.load(input)
+        props.getProperty("api_key", "")
+    } else ""
+}
+
+println("your API key found: $apiKey")
 
 android {
     namespace = "jp.co.yumemi.api"
@@ -16,6 +34,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "API_KEY", apiKey)
     }
 
     buildTypes {
@@ -48,6 +68,10 @@ dependencies {
     // Moshi
     implementation("com.squareup.moshi:moshi:1.13.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
     // Test
     testImplementation("junit:junit:4.13.2")
