@@ -5,7 +5,7 @@ on: pull_request
 jobs:
   check:
     name: Check pull request
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       # Gemfileの場所がプロジェクトルート以外の場合
       BUNDLE_GEMFILE: ${{ github.workspace }}/.github/workflows/Gemfile
