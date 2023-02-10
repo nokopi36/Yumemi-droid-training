@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JOB_STATUS: ${{ job.status }}
         run: |
-          danger \
+          bundle exec danger \
             --dangerfile=.github/workflows/Dangerfile \
             --remove-previous-comments \
             --fail-on-errors=true
