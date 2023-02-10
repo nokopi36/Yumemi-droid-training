@@ -6,6 +6,9 @@ jobs:
   check:
     name: Check pull request
     runs-on: ubuntu-18.04
+    env:
+      # Gemfileの場所がプロジェクトルート以外の場合
+      BUNDLE_GEMFILE: ${{ github.workspace }}/.github/workflows/Gemfile
     steps:
       - name: Check out
         uses: actions/checkout@v2
@@ -24,14 +27,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
-      - name: Get gem directory path
-        id: gem-dir
-        run: echo "dir=$(gem environment gemdir)" >> $GITHUB_OUTPUT
-      - name: Restore gem cache
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.gem-dir.outputs.dir }}
-          key: ${{ runner.os }}-gem-${{ hashFiles('.github/workflows/Gemfile') }}
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
       - name: Run ktlint
         run: ./gradlew ktlintCheck
       - name: Run Android Lint
@@ -44,7 +40,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JOB_STATUS: ${{ job.status }}
         run: |
-          bundle install --gemfile=.github/workflows/Gemfile
           danger \
             --dangerfile=.github/workflows/Dangerfile \
             --remove-previous-comments \
