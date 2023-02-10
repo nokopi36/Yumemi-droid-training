@@ -40,8 +40,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.gem-dir.outputs.dir }}
-          key: ${{ runner.os }}-gem-danger9.2.0-dangercheckstyleformat0.1.1-dangerandroidlint0.0.8
+          key: ${{ runner.os }}-gem-${{ hashFiles('.github/workflows/Gemfile') }}
       - name: Set up Danger
         if: steps.gem-cache.outputs.cache-hit != 'true'
-        run: |
-          gem install danger:9.2.0 danger-checkstyle_format:0.1.1 danger-android_lint:0.0.8
+        run: bundle install --gemfile=.github/workflows/Gemfile

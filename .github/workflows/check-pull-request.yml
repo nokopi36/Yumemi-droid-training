@@ -31,7 +31,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.gem-dir.outputs.dir }}
-          key: ${{ runner.os }}-gem-danger9.2.0-dangercheckstyleformat0.1.1-dangerandroidlint0.0.8
+          key: ${{ runner.os }}-gem-${{ hashFiles('.github/workflows/Gemfile') }}
       - name: Run ktlint
         run: ./gradlew ktlintCheck
       - name: Run Android Lint
@@ -44,5 +44,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JOB_STATUS: ${{ job.status }}
         run: |
-          gem install danger:9.2.0 danger-checkstyle_format:0.1.1 danger-android_lint:0.0.8
+          bundle install --gemfile=.github/workflows/Gemfile
           danger --remove-previous-comments --fail-on-errors=true
