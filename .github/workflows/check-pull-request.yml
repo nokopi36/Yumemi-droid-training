@@ -45,4 +45,7 @@ jobs:
           JOB_STATUS: ${{ job.status }}
         run: |
           bundle install --gemfile=.github/workflows/Gemfile
-          danger --remove-previous-comments --fail-on-errors=true
+          danger \
+            --dangerfile=.github/workflows/Dangerfile \
+            --remove-previous-comments \
+            --fail-on-errors=true
