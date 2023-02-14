@@ -6,9 +6,9 @@ import android.content.Context
 import android.os.NetworkOnMainThreadException
 import com.squareup.moshi.Moshi
 import jp.co.yumemi.api.model.DateAdapter
+import jp.co.yumemi.api.model.Weather
 import jp.co.yumemi.api.model.WeatherRequest
 import jp.co.yumemi.api.model.WeatherResponse
-import jp.co.yumemi.api.model.Weather
 import kotlinx.coroutines.delay
 import java.util.Date
 import kotlin.random.Random
@@ -25,6 +25,16 @@ class YumemiWeather(
             throw UnknownException()
         }
         return fetchSimpleWeather()
+    }
+
+    suspend fun fetchWeatherAsync(): String {
+        if (context.mainLooper.isCurrentThread) {
+            throw NetworkOnMainThreadException()
+        }
+
+        delay(3_000)
+
+        return fetchThrowsWeather()
     }
 
     fun fetchJsonWeather(json: String): String {
