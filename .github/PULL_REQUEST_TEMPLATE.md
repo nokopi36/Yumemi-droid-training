@@ -1,9 +1,11 @@
 ## 修正内容
 <!-- 
 課題Issueの番号をここに記載してください。
-PR画面では自動的にIssueへのリンクになります。
+PR画面では自動的にIssueへのURLリンクとなります。
+同時にPRとIssueがリンクされ、PRがデフォルトブランチ(main)にマージされると自動でIssueもcloseされます。
+参考：https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword
 -->
-課題 #number
+Resolve #number
 
 <!--
 箇条書きで良いので、簡素に記載をお願い致します。
