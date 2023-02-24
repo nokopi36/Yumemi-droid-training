@@ -56,8 +56,8 @@ end.to_h
 # このAPIではissueとPRは同一視されるがopenなPRは無い前提で実行
 issues = src_client.list_issues(src_repo, {sort: "created", direction: "asc"})
 
-# 既存のissue,PRの数を考慮
-issue_number_offset = dst_client.list_issues(dst_repo).length + 1
+# 既存のissue,PRの数を考慮(closed含む)
+issue_number_offset = dst_client.list_issues(dst_repo, {state: "all"}).length + 1
 
 # issue追加
 issues.each do |i|
