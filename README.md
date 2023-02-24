@@ -51,13 +51,14 @@ Android Studio Electric Eel | 2022.1.1 以上のバージョン
 
 💡 Issueの一覧表示
 
-Issueページでlabelのフィルターを利用し、取り組むべき課題の一覧を見てみましょう
+Issueページでlabelのフィルターを利用し、取り組むべき課題の一覧を見てみましょう。原則としてIssue番号の小さい順に取り組んでください。
 
 <img width="600" src="https://user-images.githubusercontent.com/25225028/220609765-d6c8356d-3074-4f26-a1f6-a1f25c89b36b.png">
 
 
+## 課題の進め方
 
-## ブランチ運用
+### ブランチ運用
 
 1. main ブランチから課題用のブランチを切って作業： `feature/{#}`
 2. 完了したら Pull Requestを作成してレビューを依頼
@@ -75,3 +76,20 @@ Issueページでlabelのフィルターを利用し、取り組むべき課題�
 1. `feature/1`ブランチから`feature/2`を切る
 2. 課題#2を進める
 3. `feature/1`のマージ後、`feature/2`を`main`でrebaseする
+
+### Pull Requestの作成
+
+新たにPR (Pull Request)を作成するときはテンプレート文に従って必要事項を記入してください。
+
+🚨 PRと課題Issueのリンク
+
+PRの説明文に「Resovel #{Issue番号}」と書くと自動でIssueとリンクされます。
+リンクされたIssueはPR画面の右側サイドパネルからも確認できます。    
+
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/25225028/221106346-737fd21a-9a2a-414a-bf62-94789c8ee410.png">
+
+
+リンクされたPRがマージされると自動で対応するIssueもCloseされるので進捗の管理に便利です。  
+
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/25225028/221106250-0057ea33-eac3-400d-a228-fd2a81204d98.png">
+
