@@ -2,6 +2,10 @@ name: Check pull request
 
 on: pull_request
 
+permissions:
+  # dangerでPRにコメントする場合に必要
+  pull-requests: write
+
 jobs:
   check:
     name: Check pull request
