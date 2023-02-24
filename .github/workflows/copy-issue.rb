@@ -68,8 +68,8 @@ issues.each do |i|
   end
   milestone_number = milestone_numbers[i.milestone.number]
   labels = i.labels.map(&:name)
-  with_retry do
+  r = with_retry do
     dst_client.create_issue(dst_repo, i.title, body, {milestone: milestone_number, labels: labels})
   end
-  puts "issue added: ##{issue_number} #{i.title}"
+  puts "issue added: ##{r.number} #{i.title}"
 end
