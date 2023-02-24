@@ -14,6 +14,8 @@ jobs:
       dst_repo: ${{ github.repository	 }}
       dst_repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Check out
+        uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
