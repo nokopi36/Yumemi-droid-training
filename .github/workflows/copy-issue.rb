@@ -62,7 +62,7 @@ issue_number_offset = dst_client.list_issues(dst_repo).length + 1
 # issue追加
 issues.each do |i|
   # bodyテキスト中の他issueへのリンクテキストを置換
-  body = i.body.gsub(/(?<=#)[0-9]+/) do |m|
+  body = i.body.gsub(/(?<=#)[0-9]+(?=\s)/) do |m|
     idx = issues.index{|e| e.number == m.to_i }
     (issue_number_offset + idx).to_s
   end
