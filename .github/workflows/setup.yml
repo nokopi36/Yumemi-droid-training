@@ -1,27 +1,48 @@
 name: "setup"
 on:
+  # TODO 動作確認用・外部公開時に削除予定
   workflow_dispatch:
-
-permissions:
-  issues: write
+  push:
+    branches:
+      - main
 
 jobs:
-  copy-issue:
+  setup:
     runs-on: ubuntu-20.04
+    permissions:
+      contents: write
+      issues: write
+    timeout-minutes: 10
+    if: github.event.repository.name != 'droid-training-renewal'
     env:
+      # TODO テンプレートリポジトリを外部公開したら変更・tokenは不要
       src_repo: yumemi/droid-training-renewal
       src_repo_token: ${{ secrets.SRC_REPO_TOKEN }}
-      dst_repo: ${{ github.repository	 }}
+      dst_repo: ${{ github.repository }}
       dst_repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Check out
         uses: actions/checkout@v3
-      - name: Set up Ruby
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
-      - name: Run Script
-        if: env.src_repo != env.dst_repo
+      - name: Copy Issues
         run: |
           gem install octokit -v '6.0.1'
           ruby .github/workflows/copy-issue.rb
+      - name: Cleanup
+        run: | 
+          rm -rf .github/workflows
+          rm README.md
+      - name: Commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Template cleanup"
+      - name: Push
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
