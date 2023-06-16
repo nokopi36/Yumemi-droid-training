@@ -32,13 +32,20 @@ Android Studio Electric Eel | 2022.1.1 以上のバージョン
 研修の課題はすべてIssueで管理しています。課題の種類ごとにラベルが設定されています
 
 ### 課題の選択
-すべての課題を完了する必要はありません。ご自身の進め方や時間的余裕に応じて選択してください。
+
 
 | label | 説明 |  
 |:-:|:--|  
 |必須| 必ず取り組みましょう |  
 |選択必須| 取り組む必要がありますが、作成済みコードを利用してもよいです |  
 |任意| スキップも可能です |  
+
+
+> **Note**
+> 
+> ### すべての課題を完了する必要はありません 🙆‍♂️
+> 
+> ２週間の研修期間で必須・選択必須課題が完了すれば十分です！ もし時間が余るようであれば任意課題も取り組んでみましょう 💪
 
 ### UI作成の方法
 研修を始めるときメンターの指示に従って選択してください
@@ -48,12 +55,13 @@ Android Studio Electric Eel | 2022.1.1 以上のバージョン
 |View| XML形式のレイアウトファイルを利用します |  
 |Compose| Jetpack Composeを利用します |  
 
-
-💡 Issueの一覧表示
-
-Issueページでlabelのフィルターを利用し、取り組むべき課題の一覧を見てみましょう。原則としてIssue番号の小さい順に取り組んでください。
-
-<img width="600" src="https://user-images.githubusercontent.com/25225028/220609765-d6c8356d-3074-4f26-a1f6-a1f25c89b36b.png">
+> **Note**
+> 
+> #### 💡 Issueの一覧表示
+>
+> Issueページでlabelのフィルターを利用し、取り組むべき課題の一覧を見てみましょう。原則としてIssue番号の小さい順に取り組んでください  
+>
+> <img width="600" src="https://user-images.githubusercontent.com/25225028/220609765-d6c8356d-3074-4f26-a1f6-a1f25c89b36b.png">
 
 
 ## 課題の進め方
@@ -65,31 +73,34 @@ Issueページでlabelのフィルターを利用し、取り組むべき課題�
 3. PRがapproveされたらmasterブランチにマージ
 4. 次の課題へ進む
 
-全ての改題をクリアしたら修了です！
+全ての必須課題をクリアしたら修了です！
 
-💡 レビュー待ちのとき
-
-レビュー待ちの時は次の課題に先行着手しましょう。  
-`git rebase` コマンドを使ってみましょう。  
-課題#1 がレビュー待ちの場合...
-
-1. `feature/1`ブランチから`feature/2`を切る
-2. 課題#2を進める
-3. `feature/1`のマージ後、`feature/2`を`main`でrebaseする
+> **Note**
+> 
+> #### 💡 レビュー待ちのとき
+> 
+> レビュー待ちの時は次の課題に先行着手しましょう。  
+> `git rebase` コマンドを使ってみましょう。  
+> 課題#1 がレビュー待ちの場合...
+>
+> 1. `feature/1`ブランチから`feature/2`を切る
+> 2. 課題#2を進める
+> 3. `feature/1`のマージ後、`feature/2`を`main`でrebaseする
 
 ### Pull Requestの作成
 
 新たにPR (Pull Request)を作成するときはテンプレート文に従って必要事項を記入してください。
 
-🚨 PRと課題Issueのリンク
-
-PRの説明文に「Resovel #{Issue番号}」と書くと自動でIssueとリンクされます。
-リンクされたIssueはPR画面の右側サイドパネルからも確認できます。    
-
-<img width="400" alt="image" src="https://user-images.githubusercontent.com/25225028/221106346-737fd21a-9a2a-414a-bf62-94789c8ee410.png">
-
-
-リンクされたPRがマージされると自動で対応するIssueもCloseされるので進捗の管理に便利です。  
-
-<img width="400" alt="image" src="https://user-images.githubusercontent.com/25225028/221106250-0057ea33-eac3-400d-a228-fd2a81204d98.png">
+> **Note**
+> 
+> #### 💡 PRと課題Issueのリンク
+>
+> PRの説明文に「Resovel #{Issue番号}」と書くと自動でIssueとリンクされます. 
+> リンクされたIssueはPR画面の右側サイドパネルからも確認できます  
+>
+> <img width="400" alt="image" src="https://user-images.githubusercontent.com/25225028/221106346-737fd21a-9a2a-414a-bf62-94789c8ee410.png">
+> 
+> リンクされたPRがマージされると自動で対応するIssueもCloseされるので進捗の管理に便利です  
+> 
+> <img width="400" alt="image" src="https://user-images.githubusercontent.com/25225028/221106250-0057ea33-eac3-400d-a228-fd2a81204d98.png">
 
