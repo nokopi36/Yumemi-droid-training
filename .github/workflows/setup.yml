@@ -33,14 +33,14 @@ jobs:
           ruby .github/workflows/copy-issue.rb
       - name: Cleanup
         run: | 
+          mv -f .github/README_TEMPLATE.md README.md 
           rm -rf .github/workflows
-          rm README.md
       - name: Commit
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
-          git commit -m "Template cleanup"
+          git commit -m "Template Setup"
       - name: Push
         uses: ad-m/github-push-action@v0.6.0
         with:
