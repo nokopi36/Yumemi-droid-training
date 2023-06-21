@@ -47,7 +47,7 @@ Android Studio Electric Eel | 2022.1.1 以上のバージョン
 > 
 > ### すべての課題を完了する必要はありません
 > 
-> ２週間の研修期間で必須・選択必須課題が完了すれば十分です！ もし時間が余るようであれば任意課題も取り組んでみましょう 💪
+> ２週間の研修期間で必須課題が完了すれば十分です！ もし時間が余るようであれば任意課題も取り組んでみましょう 💪
 
 ### UI作成の方法
 研修を始めるときメンターの指示に従って選択してください
@@ -106,3 +106,30 @@ Android Studio Electric Eel | 2022.1.1 以上のバージョン
 > 
 > <img width="400" alt="image" src="https://user-images.githubusercontent.com/25225028/221106250-0057ea33-eac3-400d-a228-fd2a81204d98.png">
 
+### 作成済みコードの利用
+
+一部の実装負担が大きい課題では、あらかじめ作成済みのコードを利用できます. 
+
+- API呼び出しの実装：`api`モジュールのファイル
+- CIの実装：`./github`以下のファイル
+
+作成済みコードはテンプレートリポジトリのブランチ`template/*`に用意されており、以下のようにマージしてください.
+
+
+<!-- TODO 外部公開したらrepository名を変更 -->
+
+```bash
+git remote add template-repo https://github.com/yumemi/droid-training-renewal.git
+git fetch template-repo ${利用したいブランチ}
+git checkout ${作業ブランチ}
+git merge --allow-unrelated-histories -X theirs template-repo/${利用したいブランチ}
+```
+
+> **Note**
+> 
+> git履歴上で関連のないブランチをマージする場合は`--allow-unrelated-histories`オプションが必要です.
+
+> **Warning**
+>
+> マージするとき`-X theirs`オプションを指定すると、コンフリクトした場合はremote側（テンプレートリポジトリ）の差分を選択して自動で解消します.  
+> ただし`api`モジュール以下を独自に編集して利用している場合は、オプションを外して手動でコンフリクトを解消してください.
