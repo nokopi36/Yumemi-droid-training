@@ -17,16 +17,18 @@ Android Studio Electric Eel | 2022.1.1 以上のバージョン
 
 ## 研修を始める前に
 
-#### 1. GitHubリポジトリの用意
-本プロジェクトを [**Duplicate** してください](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository)（Fork しないようにしてください。必要ならプライベートリポジトリにしても大丈夫です）。今後のコミットは全てご自身のリポジトリで行ってください。
+このリポジトリはテンプレートリポジトリに設定されています。右上の「Use this template」をタップして、ご自身のGitHubアカウントで研修用リポジトリを作成してください。
 
-#### 2. Issueのコピー
-ご自身のリポジトリにIssueをコピーするGitHub Actionsを用意しています。
-[こちらのWorkflow](./.github/workflows/setup.yml)を[手動でトリガーする](https://docs.github.com/ja/actions/managing-workflow-runs/manually-running-a-workflow)ことでコピーできますのでご活用下さい。
+<!-- TODO 操作のスクリーンショットをここに貼る -->
 
-<img width="600" src="https://user-images.githubusercontent.com/25225028/220605964-1e6eda91-cdc7-4540-b3c5-e2da13c88101.png">
+> **Warning**
+>
+> リポジトリ名は「droid-training-template」以外に設定する必要があります
 
+リポジトリが作成されると、テンプレートのSetupワークフローが自動実行されます。
 
+- 各課題 Issue の登録
+- 不要なファイルを削除して Commit & Push
 
 ## 課題
 研修の課題はすべてIssueで管理しています。課題の種類ごとにラベルが設定されています
@@ -41,9 +43,9 @@ Android Studio Electric Eel | 2022.1.1 以上のバージョン
 |任意| スキップも可能です |  
 
 
-> **Note**
+> **Warning**
 > 
-> ### すべての課題を完了する必要はありません 🙆‍♂️
+> ### すべての課題を完了する必要はありません
 > 
 > ２週間の研修期間で必須・選択必須課題が完了すれば十分です！ もし時間が余るようであれば任意課題も取り組んでみましょう 💪
 
