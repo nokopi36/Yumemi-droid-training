@@ -6,10 +6,6 @@ on:
     branches:
       - main
 
-env:
-  # TODO テンプレートリポジトリを外部公開したら変更
-  src_repo: yumemi/droid-training-renewal
-
 jobs:
   setup:
     runs-on: ubuntu-20.04
@@ -17,16 +13,42 @@ jobs:
       contents: write
       issues: write
     timeout-minutes: 10
-    if: github.event.repository.name != env.src_repo
+    if: github.repository != 'yumemi/droid-training-renewal'
     env:
-      src_repo: ${{ env.src_repo }}
+      # TODO テンプレートリポジトリを外部公開したら変更
+      src_repo: yumemi/droid-training-renewal
       # TODO テンプレートリポジトリを外部公開したらtokenは不要
       src_repo_token: ${{ secrets.SRC_REPO_TOKEN }}
       dst_repo: ${{ github.repository }}
       dst_repo_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Echo
+        run: |
+          echo ${{ github.repository }}
+          echo ${{ env.src_repo }}
+          echo ${{ github.actor }}
       - name: Check out
         uses: actions/checkout@v3
+        with:
+          # TODO テンプレートリポジトリを外部公開したらtokenは不要
+          token: ${{ secrets.SRC_REPO_TOKEN }}
+      - name: Git config
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Setup branches
+        run: |
+          git remote add template-repo https://github.com/${{ env.src_repo }}.git
+          git fetch --all
+          branches=($(git branch -r | grep template-repo/template/ | sed "s/template-repo\///"))
+          for branch in "${branches[@]}"; do
+            echo $branch
+            git checkout -b $branch
+            git merge --allow-unrelated-histories -X theirs --no-edit "template-repo/${branch}"
+            git push origin $branch
+            git checkout main
+          done
+          git remote rm template-repo
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -36,17 +58,11 @@ jobs:
           gem install octokit -v '6.0.1'
           ruby .github/workflows/copy-issue.rb
       - name: Cleanup
-        run: | 
+        run: |
           mv -f .github/README_TEMPLATE.md README.md 
           rm -rf .github/workflows
-      - name: Commit
+      - name: Commit & Push
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
           git add .
           git commit -m "Template Setup"
-      - name: Push
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          branch: main
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git push origin main
