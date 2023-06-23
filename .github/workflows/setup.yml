@@ -17,21 +17,15 @@ jobs:
     env:
       # TODO テンプレートリポジトリを外部公開したら変更
       src_repo: yumemi/droid-training-renewal
-      # TODO テンプレートリポジトリを外部公開したらtokenは不要
-      src_repo_token: ${{ secrets.SRC_REPO_TOKEN }}
       dst_repo: ${{ github.repository }}
-      dst_repo_token: ${{ secrets.GITHUB_TOKEN }}
+      # TODO テンプレートリポジトリを外部公開したらtokenを変更
+      access_token: ${{ secrets.ACCESS_TOKEN }}
+      # access_token: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Echo
-        run: |
-          echo ${{ github.repository }}
-          echo ${{ env.src_repo }}
-          echo ${{ github.actor }}
       - name: Check out
         uses: actions/checkout@v3
         with:
-          # TODO テンプレートリポジトリを外部公開したらtokenは不要
-          token: ${{ secrets.SRC_REPO_TOKEN }}
+          token: ${{ env.access_token }}
       - name: Git config
         run: |
           git config --local user.email "action@github.com"
