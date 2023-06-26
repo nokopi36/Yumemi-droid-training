@@ -19,7 +19,13 @@ Android Studio Electric Eel | 2022.1.1 以上のバージョン
 
 このリポジトリはテンプレートリポジトリに設定されています。右上の「Use this template」をタップして、ご自身のGitHubアカウントで研修用リポジトリを作成してください。
 
-<!-- TODO 操作のスクリーンショットをここに貼る -->
+<img src="https://user-images.githubusercontent.com/25225028/248723114-3db906be-ac27-4072-bab6-b8fa15663b7f.png">
+
+> **Warning**
+> 
+> 「Include all branches」オプションは**チェックしない**でください
+> <img src="https://user-images.githubusercontent.com/25225028/248724454-ee7e2890-6742-4e3a-bb0a-2f80a6ccb4ef.png">
+
 
 リポジトリが作成されると、テンプレートのSetupワークフローが自動実行されます。
 
