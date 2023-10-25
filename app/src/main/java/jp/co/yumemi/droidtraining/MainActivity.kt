@@ -125,7 +125,6 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
                         )
                     }
                 }
-
             }
         }
     }
