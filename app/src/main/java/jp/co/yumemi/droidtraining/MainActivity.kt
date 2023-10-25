@@ -47,8 +47,8 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        val imageSize = maxWidth/2
-        val textSize = imageSize/2
+        val imageSize = maxWidth / 2
+        val textSize = imageSize / 2
         Column {
             Image(
                 painter = painterResource(id = R.drawable.dummy),
@@ -58,7 +58,7 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
                     .size(imageSize)
                     .background(Color.Yellow)
             )
-            Row{
+            Row {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -81,7 +81,8 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
                             .padding(top = 80.dp),
                         contentPadding = PaddingValues(
                             horizontal = 8.dp,
-                            vertical = 12.dp)
+                            vertical = 12.dp
+                        )
                     ) {
                         Text(
                             text = stringResource(id = R.string.reload),
@@ -101,7 +102,8 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
                         textAlign = TextAlign.Center,
                         color = Color.Red
                     )
-                    Button(onClick = { /*TODO*/ },
+                    Button(
+                        onClick = { /*TODO*/ },
                         colors = ButtonDefaults.textButtonColors(
                             contentColor = Color.White,
                             containerColor = Color.Black
@@ -112,20 +114,21 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
                             .padding(top = 80.dp),
                         contentPadding = PaddingValues(
                             horizontal = 8.dp,
-                            vertical = 12.dp)
+                            vertical = 12.dp
+                        )
                     ) {
                         Text(
                             text = stringResource(id = R.string.next),
                             style = TextStyle(
                                 fontSize = 12.sp
-                            ))
+                            )
+                        )
                     }
                 }
 
             }
         }
     }
-
 }
 
 @Preview
