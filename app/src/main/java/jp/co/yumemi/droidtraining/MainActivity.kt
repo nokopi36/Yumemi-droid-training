@@ -48,7 +48,8 @@ fun WeatherApp() {
         "sunny" to R.drawable.sunny,
         "cloudy" to R.drawable.cloudy,
         "rainy" to R.drawable.rainy,
-        "snow" to R.drawable.snow)
+        "snow" to R.drawable.snow
+    )
 
     BoxWithConstraints(
         modifier = Modifier
@@ -75,7 +76,7 @@ fun WeatherApp() {
                     weatherIcon = weatherMap.getOrDefault(yumemiWeather.fetchSimpleWeather(), R.drawable.dummy)
                     minTemperature = (-5..10).random().toString()
                     maxTemperature = (20..30).random().toString()
-                                },
+                },
                 onNextClick = { /*TODO*/ },
                 modifier = Modifier
                     .constrainAs(actionButtons) {
