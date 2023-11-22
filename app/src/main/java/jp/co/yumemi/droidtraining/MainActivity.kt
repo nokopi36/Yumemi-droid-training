@@ -6,12 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.component.ActionButtons
 import jp.co.yumemi.droidtraining.component.WeatherInfo
 
@@ -20,13 +27,29 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WeatherApp("10", "20")
+            WeatherApp()
         }
     }
 }
 
 @Composable
-fun WeatherApp(minTemperature: String, maxTemperature: String) {
+fun WeatherApp() {
+    val yumemiWeather = YumemiWeather(context = LocalContext.current)
+    var weatherIcon by remember {
+        mutableIntStateOf(R.drawable.dummy)
+    }
+    var minTemperature by remember {
+        mutableStateOf("10")
+    }
+    var maxTemperature by remember {
+        mutableStateOf("20")
+    }
+    val weatherMap = mapOf(
+        "sunny" to R.drawable.sunny,
+        "cloudy" to R.drawable.cloudy,
+        "rainy" to R.drawable.rainy,
+        "snow" to R.drawable.snow)
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize(),
@@ -36,7 +59,7 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
         ConstraintLayout {
             val (weatherInfo, actionButtons) = createRefs()
             WeatherInfo(
-                weatherIcon = R.drawable.dummy,
+                weatherIcon = weatherIcon,
                 minTemperature = minTemperature,
                 maxTemperature = maxTemperature,
                 iconSize = imageSize,
@@ -48,7 +71,11 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
                 }
             )
             ActionButtons(
-                onReloadClick = { /*TODO*/ },
+                onReloadClick = {
+                    weatherIcon = weatherMap.getOrDefault(yumemiWeather.fetchSimpleWeather(), R.drawable.dummy)
+                    minTemperature = (-5..10).random().toString()
+                    maxTemperature = (20..30).random().toString()
+                                },
                 onNextClick = { /*TODO*/ },
                 modifier = Modifier
                     .constrainAs(actionButtons) {
@@ -65,5 +92,5 @@ fun WeatherApp(minTemperature: String, maxTemperature: String) {
 @Preview
 @Composable
 private fun PreviewWeatherApp() {
-    WeatherApp("10", "20")
+    WeatherApp()
 }
