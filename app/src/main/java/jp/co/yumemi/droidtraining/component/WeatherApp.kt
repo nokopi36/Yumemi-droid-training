@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.data.WeatherState
@@ -26,7 +27,8 @@ fun WeatherApp() {
             WeatherState(
                 R.drawable.sunny,
                 "10",
-                "20"
+                "20",
+                false
             )
         )
     }
@@ -36,6 +38,25 @@ fun WeatherApp() {
         "rainy" to R.drawable.rainy,
         "snow" to R.drawable.snow
     )
+
+    val onReloadButtonClick: () -> Unit = {
+        weatherState = try {
+            val weather = yumemiWeather.fetchThrowsWeather()
+            weatherState.copy(
+                weather = weatherMap.getOrDefault
+                    (
+                    weather,
+                    R.drawable.dummy
+                ),
+                minTemperature = (-5..10).random().toString(),
+                maxTemperature = (20..30).random().toString(),
+                showErrorDialog = false
+            )
+        } catch (e: UnknownException) {
+            weatherState.copy(showErrorDialog = true)
+        }
+
+    }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -58,17 +79,7 @@ fun WeatherApp() {
                 }
             )
             ActionButtons(
-                onReloadClick = {
-                    weatherState = WeatherState(
-                        weatherMap.getOrDefault
-                            (
-                            yumemiWeather.fetchThrowsWeather(),
-                            R.drawable.dummy
-                        ),
-                        (-5..10).random().toString(),
-                        (20..30).random().toString()
-                    )
-                },
+                onReloadClick = onReloadButtonClick,
                 onNextClick = { /*TODO*/ },
                 modifier = Modifier
                     .constrainAs(actionButtons) {
@@ -80,6 +91,14 @@ fun WeatherApp() {
             )
         }
     }
+
+
+
+    WeatherErrorDialog(
+        showErrorDialog = weatherState.showErrorDialog,
+        confirmButton = onReloadButtonClick,
+        dismissButton = { weatherState = weatherState.copy(showErrorDialog = false) }
+    )
 }
 
 @Preview
