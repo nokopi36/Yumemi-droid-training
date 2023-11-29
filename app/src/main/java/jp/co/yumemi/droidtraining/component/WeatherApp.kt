@@ -43,8 +43,7 @@ fun WeatherApp() {
         weatherState = try {
             val weather = yumemiWeather.fetchThrowsWeather()
             weatherState.copy(
-                weather = weatherMap.getOrDefault
-                    (
+                weather = weatherMap.getOrDefault(
                     weather,
                     R.drawable.dummy
                 ),
@@ -55,7 +54,6 @@ fun WeatherApp() {
         } catch (e: UnknownException) {
             weatherState.copy(showErrorDialog = true)
         }
-
     }
 
     BoxWithConstraints(
@@ -91,8 +89,6 @@ fun WeatherApp() {
             )
         }
     }
-
-
 
     WeatherErrorDialog(
         showErrorDialog = weatherState.showErrorDialog,
