@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -21,6 +20,7 @@ import androidx.constraintlayout.compose.Dimension
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.component.ActionButtons
 import jp.co.yumemi.droidtraining.component.WeatherInfo
+import jp.co.yumemi.droidtraining.data.WeatherState
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,14 +35,14 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun WeatherApp() {
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
-    var weatherIcon by remember {
-        mutableIntStateOf(R.drawable.dummy)
-    }
-    var minTemperature by remember {
-        mutableStateOf("10")
-    }
-    var maxTemperature by remember {
-        mutableStateOf("20")
+    var weatherState by remember {
+        mutableStateOf(
+            WeatherState(
+                R.drawable.dummy,
+                "10",
+                "20"
+            )
+        )
     }
     val weatherMap = mapOf(
         "sunny" to R.drawable.sunny,
@@ -60,9 +60,9 @@ fun WeatherApp() {
         ConstraintLayout {
             val (weatherInfo, actionButtons) = createRefs()
             WeatherInfo(
-                weatherIcon = weatherIcon,
-                minTemperature = minTemperature,
-                maxTemperature = maxTemperature,
+                weatherIcon = weatherState.weather,
+                minTemperature = weatherState.minTemperature,
+                maxTemperature = weatherState.maxTemperature,
                 iconSize = imageSize,
                 modifier = Modifier.constrainAs(weatherInfo) {
                     top.linkTo(parent.top)
@@ -73,9 +73,15 @@ fun WeatherApp() {
             )
             ActionButtons(
                 onReloadClick = {
-                    weatherIcon = weatherMap.getOrDefault(yumemiWeather.fetchSimpleWeather(), R.drawable.dummy)
-                    minTemperature = (-5..10).random().toString()
-                    maxTemperature = (20..30).random().toString()
+                    weatherState = WeatherState(
+                        weatherMap.getOrDefault
+                            (
+                            yumemiWeather.fetchSimpleWeather(),
+                            R.drawable.dummy
+                        ),
+                        (-5..10).random().toString(),
+                        (20..30).random().toString()
+                    )
                 },
                 onNextClick = { /*TODO*/ },
                 modifier = Modifier
