@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import jp.co.yumemi.droidtraining.component.WeatherApp
 
 class MainActivity : AppCompatActivity() {
-    private val weatherAppViewModel by viewModels<WeatherAppViewModel> { WeatherAppViewModelFactory(applicationContext) }
+    private val weatherAppViewModel by viewModels<WeatherAppViewModel> {
+        WeatherAppViewModelFactory(applicationContext)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
