@@ -11,12 +11,12 @@ import jp.co.yumemi.droidtraining.R
 @Composable
 fun WeatherErrorDialog(
     showErrorDialog: Boolean,
-    confirmButton: () -> Unit,
-    dismissButton: () -> Unit,
+    onReloadClicked: () -> Unit,
+    onCloseClicked: () -> Unit,
 ) {
     if (showErrorDialog) {
         AlertDialog(
-            onDismissRequest = { /*TODO*/ },
+            onDismissRequest = { /*ダイアログ外タップ、戻るボタン操作時に閉じないようにするため意図的に空*/ },
             title = {
                 Text(text = stringResource(id = R.string.error))
             },
@@ -26,7 +26,7 @@ fun WeatherErrorDialog(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        confirmButton()
+                        onReloadClicked()
                     }
                 ) {
                     Text(text = stringResource(id = R.string.reload))
@@ -35,7 +35,7 @@ fun WeatherErrorDialog(
             dismissButton = {
                 TextButton(
                     onClick = {
-                        dismissButton()
+                        onCloseClicked()
                     }
                 ) {
                     Text(text = stringResource(id = R.string.close))
@@ -48,5 +48,5 @@ fun WeatherErrorDialog(
 @Preview
 @Composable
 private fun PreviewWeatherErrorDialog() {
-    WeatherErrorDialog(true, confirmButton = {}, dismissButton = {})
+    WeatherErrorDialog(true, onReloadClicked = {}, onCloseClicked = {})
 }
