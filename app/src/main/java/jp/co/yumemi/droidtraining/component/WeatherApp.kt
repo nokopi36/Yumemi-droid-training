@@ -92,8 +92,8 @@ fun WeatherApp() {
 
     WeatherErrorDialog(
         showErrorDialog = weatherState.showErrorDialog,
-        confirmButton = onReloadButtonClick,
-        dismissButton = { weatherState = weatherState.copy(showErrorDialog = false) }
+        onReloadClicked = onReloadButtonClick,
+        onCloseClicked = { weatherState = weatherState.copy(showErrorDialog = false) }
     )
 }
 
