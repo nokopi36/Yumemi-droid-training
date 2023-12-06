@@ -3,58 +3,21 @@ package jp.co.yumemi.droidtraining.component
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import jp.co.yumemi.api.UnknownException
-import jp.co.yumemi.api.YumemiWeather
-import jp.co.yumemi.droidtraining.R
-import jp.co.yumemi.droidtraining.data.WeatherState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import jp.co.yumemi.droidtraining.WeatherAppViewModel
 
 @Composable
-fun WeatherApp() {
-    val yumemiWeather = YumemiWeather(context = LocalContext.current)
-    var weatherState by remember {
-        mutableStateOf(
-            WeatherState(
-                R.drawable.sunny,
-                "10",
-                "20",
-                false
-            )
-        )
-    }
-    val weatherMap = mapOf(
-        "sunny" to R.drawable.sunny,
-        "cloudy" to R.drawable.cloudy,
-        "rainy" to R.drawable.rainy,
-        "snow" to R.drawable.snow
-    )
-
-    val onReloadButtonClick: () -> Unit = {
-        weatherState = try {
-            val weather = yumemiWeather.fetchThrowsWeather()
-            weatherState.copy(
-                weather = weatherMap.getOrDefault(
-                    weather,
-                    R.drawable.dummy
-                ),
-                minTemperature = (-5..10).random().toString(),
-                maxTemperature = (20..30).random().toString(),
-                showErrorDialog = false
-            )
-        } catch (e: UnknownException) {
-            weatherState.copy(showErrorDialog = true)
-        }
-    }
+fun WeatherApp(
+    weatherAppViewModel: WeatherAppViewModel = viewModel(),
+) {
+    val weatherState = weatherAppViewModel.weatherState.observeAsState()
 
     BoxWithConstraints(
         modifier = Modifier
@@ -64,20 +27,22 @@ fun WeatherApp() {
         val imageSize = maxWidth / 2
         ConstraintLayout {
             val (weatherInfo, actionButtons) = createRefs()
-            WeatherInfo(
-                weatherIcon = weatherState.weather,
-                minTemperature = weatherState.minTemperature,
-                maxTemperature = weatherState.maxTemperature,
-                iconSize = imageSize,
-                modifier = Modifier.constrainAs(weatherInfo) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-            )
+            weatherState.value?.let {
+                WeatherInfo(
+                    weatherIcon = it.weather,
+                    minTemperature = it.minTemperature,
+                    maxTemperature = it.maxTemperature,
+                    iconSize = imageSize,
+                    modifier = Modifier.constrainAs(weatherInfo) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                )
+            }
             ActionButtons(
-                onReloadClick = onReloadButtonClick,
+                onReloadClick = weatherAppViewModel.onReloadButtonClicked,
                 onNextClick = { /*TODO*/ },
                 modifier = Modifier
                     .constrainAs(actionButtons) {
@@ -90,11 +55,13 @@ fun WeatherApp() {
         }
     }
 
-    WeatherErrorDialog(
-        showErrorDialog = weatherState.showErrorDialog,
-        onReloadClicked = onReloadButtonClick,
-        onCloseClicked = { weatherState = weatherState.copy(showErrorDialog = false) }
-    )
+    weatherState.value?.let {
+        WeatherErrorDialog(
+            showErrorDialog = it.showErrorDialog,
+            onReloadClicked = weatherAppViewModel.onReloadButtonClicked,
+            onCloseClicked = weatherAppViewModel.onCloseButtonClicked
+        )
+    }
 }
 
 @Preview
