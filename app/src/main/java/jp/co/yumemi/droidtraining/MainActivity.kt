@@ -8,8 +8,8 @@ import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.component.WeatherApp
 
 class MainActivity : AppCompatActivity() {
-    private val yumemiWeather = YumemiWeather(applicationContext)
     private val weatherAppViewModel by viewModels<WeatherAppViewModel> {
+        val yumemiWeather = YumemiWeather(applicationContext)
         WeatherAppViewModelFactory(yumemiWeather)
     }
 
