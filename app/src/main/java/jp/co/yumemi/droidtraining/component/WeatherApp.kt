@@ -3,7 +3,7 @@ package jp.co.yumemi.droidtraining.component
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,7 +17,7 @@ import jp.co.yumemi.droidtraining.WeatherAppViewModel
 fun WeatherApp(
     weatherAppViewModel: WeatherAppViewModel = viewModel(),
 ) {
-    val weatherState = weatherAppViewModel.weatherState.observeAsState()
+    val weatherState = weatherAppViewModel.weatherState.collectAsState()
 
     BoxWithConstraints(
         modifier = Modifier
@@ -27,7 +27,7 @@ fun WeatherApp(
         val imageSize = maxWidth / 2
         ConstraintLayout {
             val (weatherInfo, actionButtons) = createRefs()
-            weatherState.value?.let {
+            weatherState.value.let {
                 WeatherInfo(
                     weatherIcon = it.weather,
                     minTemperature = it.minTemperature,
@@ -55,13 +55,11 @@ fun WeatherApp(
         }
     }
 
-    weatherState.value?.let {
-        WeatherErrorDialog(
-            showErrorDialog = it.showErrorDialog,
-            onReloadClicked = { weatherAppViewModel.onReloadButtonClicked() },
-            onCloseClicked = { weatherAppViewModel.onCloseButtonClicked() }
-        )
-    }
+    WeatherErrorDialog(
+        showErrorDialog = weatherState.value.showErrorDialog,
+        onReloadClicked = { weatherAppViewModel.onReloadButtonClicked() },
+        onCloseClicked = { weatherAppViewModel.onCloseButtonClicked() }
+    )
 }
 
 @Preview

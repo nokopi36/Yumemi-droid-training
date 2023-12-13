@@ -8,7 +8,7 @@ data class WeatherState(
     val maxTemperature: String,
     val showErrorDialog: Boolean,
 ) {
-    companion object{
+    companion object {
         val weatherMap = mapOf(
             "sunny" to R.drawable.sunny,
             "cloudy" to R.drawable.cloudy,
