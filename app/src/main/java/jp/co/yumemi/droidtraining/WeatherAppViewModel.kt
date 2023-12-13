@@ -7,7 +7,7 @@ import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.data.WeatherState
 
-class WeatherAppViewModel(yumemiWeather: YumemiWeather) : ViewModel() {
+class WeatherAppViewModel(private val yumemiWeather: YumemiWeather) : ViewModel() {
 
     private val _weatherState: MutableLiveData<WeatherState> = MutableLiveData<WeatherState>(
         WeatherState(
@@ -26,7 +26,7 @@ class WeatherAppViewModel(yumemiWeather: YumemiWeather) : ViewModel() {
         "snow" to R.drawable.snow
     )
 
-    val onReloadButtonClicked: () -> Unit = {
+    fun onReloadButtonClicked() {
         _weatherState.value = try {
             val weather = yumemiWeather.fetchThrowsWeather()
             _weatherState.value?.copy(
@@ -43,7 +43,7 @@ class WeatherAppViewModel(yumemiWeather: YumemiWeather) : ViewModel() {
         }
     }
 
-    val onCloseButtonClicked: () -> Unit = {
+    fun onCloseButtonClicked() {
         _weatherState.value = _weatherState.value?.copy(showErrorDialog = false)
     }
 }

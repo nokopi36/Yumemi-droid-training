@@ -42,7 +42,7 @@ fun WeatherApp(
                 )
             }
             ActionButtons(
-                onReloadClick = weatherAppViewModel.onReloadButtonClicked,
+                onReloadClick = { weatherAppViewModel.onReloadButtonClicked() },
                 onNextClick = { /*TODO*/ },
                 modifier = Modifier
                     .constrainAs(actionButtons) {
@@ -58,8 +58,8 @@ fun WeatherApp(
     weatherState.value?.let {
         WeatherErrorDialog(
             showErrorDialog = it.showErrorDialog,
-            onReloadClicked = weatherAppViewModel.onReloadButtonClicked,
-            onCloseClicked = weatherAppViewModel.onCloseButtonClicked
+            onReloadClicked = { weatherAppViewModel.onReloadButtonClicked() },
+            onCloseClicked = { weatherAppViewModel.onCloseButtonClicked() }
         )
     }
 }
