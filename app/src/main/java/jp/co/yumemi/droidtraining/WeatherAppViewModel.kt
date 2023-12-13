@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.data.WeatherState
+import jp.co.yumemi.droidtraining.data.WeatherState.Companion.weatherMap
 
 class WeatherAppViewModel(private val yumemiWeather: YumemiWeather) : ViewModel() {
 
@@ -18,13 +19,6 @@ class WeatherAppViewModel(private val yumemiWeather: YumemiWeather) : ViewModel(
         )
     )
     val weatherState: LiveData<WeatherState> = _weatherState
-
-    private val weatherMap = mapOf(
-        "sunny" to R.drawable.sunny,
-        "cloudy" to R.drawable.cloudy,
-        "rainy" to R.drawable.rainy,
-        "snow" to R.drawable.snow
-    )
 
     fun onReloadButtonClicked() {
         _weatherState.value = try {
