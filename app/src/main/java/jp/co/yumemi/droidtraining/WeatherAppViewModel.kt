@@ -1,6 +1,5 @@
 package jp.co.yumemi.droidtraining
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,8 +7,7 @@ import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.data.WeatherState
 
-class WeatherAppViewModel(context: Context) : ViewModel() {
-    private val yumemiWeather = YumemiWeather(context)
+class WeatherAppViewModel(yumemiWeather: YumemiWeather) : ViewModel() {
 
     private val _weatherState: MutableLiveData<WeatherState> = MutableLiveData<WeatherState>(
         WeatherState(
