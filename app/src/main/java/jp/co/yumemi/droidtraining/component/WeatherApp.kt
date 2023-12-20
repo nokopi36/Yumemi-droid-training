@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -15,20 +14,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
+import jp.co.yumemi.droidtraining.data.WeatherState
 
 @Composable
 fun WeatherApp() {
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
-    var weatherIcon by remember {
-        mutableIntStateOf(R.drawable.dummy)
-    }
-    var minTemperature by remember {
-        mutableStateOf("10")
-    }
-    var maxTemperature by remember {
-        mutableStateOf("20")
+    var weatherState by remember {
+        mutableStateOf(
+            WeatherState(
+                R.drawable.sunny,
+                "10",
+                "20",
+                false
+            )
+        )
     }
     val weatherMap = mapOf(
         "sunny" to R.drawable.sunny,
@@ -36,6 +38,23 @@ fun WeatherApp() {
         "rainy" to R.drawable.rainy,
         "snow" to R.drawable.snow
     )
+
+    val onReloadButtonClick: () -> Unit = {
+        weatherState = try {
+            val weather = yumemiWeather.fetchThrowsWeather()
+            weatherState.copy(
+                weather = weatherMap.getOrDefault(
+                    weather,
+                    R.drawable.dummy
+                ),
+                minTemperature = (-5..10).random().toString(),
+                maxTemperature = (20..30).random().toString(),
+                showErrorDialog = false
+            )
+        } catch (e: UnknownException) {
+            weatherState.copy(showErrorDialog = true)
+        }
+    }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -46,9 +65,9 @@ fun WeatherApp() {
         ConstraintLayout {
             val (weatherInfo, actionButtons) = createRefs()
             WeatherInfo(
-                weatherIcon = weatherIcon,
-                minTemperature = minTemperature,
-                maxTemperature = maxTemperature,
+                weatherIcon = weatherState.weather,
+                minTemperature = weatherState.minTemperature,
+                maxTemperature = weatherState.maxTemperature,
                 iconSize = imageSize,
                 modifier = Modifier.constrainAs(weatherInfo) {
                     top.linkTo(parent.top)
@@ -58,14 +77,7 @@ fun WeatherApp() {
                 }
             )
             ActionButtons(
-                onReloadClick = {
-                    weatherIcon = weatherMap.getOrDefault(
-                        yumemiWeather.fetchSimpleWeather(),
-                        R.drawable.dummy
-                    )
-                    minTemperature = (-5..10).random().toString()
-                    maxTemperature = (20..30).random().toString()
-                },
+                onReloadClick = onReloadButtonClick,
                 onNextClick = { /*TODO*/ },
                 modifier = Modifier
                     .constrainAs(actionButtons) {
@@ -77,6 +89,12 @@ fun WeatherApp() {
             )
         }
     }
+
+    WeatherErrorDialog(
+        showErrorDialog = weatherState.showErrorDialog,
+        onReloadClicked = onReloadButtonClick,
+        onCloseClicked = { weatherState = weatherState.copy(showErrorDialog = false) }
+    )
 }
 
 @Preview

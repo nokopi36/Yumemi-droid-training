@@ -3,4 +3,7 @@
     <string name="reload">RELOAD</string>
     <string name="next">NEXT</string>
     <string name="temperature">%s°C</string>
+    <string name="error">Error</string>
+    <string name="error_text">エラーが発生しました。</string>
+    <string name="close">CLOSE</string>
 </resources>
