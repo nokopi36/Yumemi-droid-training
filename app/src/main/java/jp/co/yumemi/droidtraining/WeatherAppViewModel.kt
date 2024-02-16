@@ -1,13 +1,16 @@
 package jp.co.yumemi.droidtraining
 
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.data.WeatherState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class WeatherAppViewModel(private val yumemiWeather: YumemiWeather) : ViewModel() {
+@HiltViewModel
+class WeatherAppViewModel @Inject constructor(private val yumemiWeather: YumemiWeather) : ViewModel() {
 
     private val _weatherState: MutableStateFlow<WeatherState> = MutableStateFlow(
         WeatherState(

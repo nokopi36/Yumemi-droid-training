@@ -4,14 +4,12 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import jp.co.yumemi.api.YumemiWeather
+import dagger.hilt.android.AndroidEntryPoint
 import jp.co.yumemi.droidtraining.component.WeatherApp
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val weatherAppViewModel by viewModels<WeatherAppViewModel> {
-        val yumemiWeather = YumemiWeather(applicationContext)
-        WeatherAppViewModelFactory(yumemiWeather)
-    }
+    private val weatherAppViewModel: WeatherAppViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
