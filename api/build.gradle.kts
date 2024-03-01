@@ -8,11 +8,10 @@ plugins {
 
 android {
     namespace = "jp.co.yumemi.api"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 27
-        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -43,7 +42,7 @@ android {
 
 dependencies {
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
     // Moshi
     implementation("com.squareup.moshi:moshi:1.15.0")
@@ -52,7 +51,7 @@ dependencies {
     // Test
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("org.robolectric:robolectric:4.8.2")
     testImplementation("io.mockk:mockk:1.13.3")
 }
