@@ -10,6 +10,7 @@ data class WeatherState(
     val minTemperature: String,
     val maxTemperature: String,
     val showErrorDialog: Boolean,
+    val showProgressIndicator: Boolean,
 ) : Parcelable {
     companion object {
         val weatherMap = mapOf(
