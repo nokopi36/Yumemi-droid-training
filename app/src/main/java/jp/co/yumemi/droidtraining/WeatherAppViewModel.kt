@@ -44,11 +44,12 @@ class WeatherAppViewModel @Inject constructor(
         }
     }
 
-    private val exceptionHandler: CoroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        if (throwable is UnknownException) {
-            _weatherState.update { it.copy(showErrorDialog = true) }
+    private val exceptionHandler: CoroutineExceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            if (throwable is UnknownException) {
+                _weatherState.update { it.copy(showErrorDialog = true) }
+            }
         }
-    }
 
     fun onReloadButtonClicked() {
         viewModelScope.launch(exceptionHandler) {
