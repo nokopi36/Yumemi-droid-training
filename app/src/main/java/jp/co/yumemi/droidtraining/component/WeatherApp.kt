@@ -61,6 +61,8 @@ fun WeatherApp(
         onReloadClicked = { weatherAppViewModel.onReloadButtonClicked() },
         onCloseClicked = { weatherAppViewModel.onCloseButtonClicked() }
     )
+
+    ProgressIndicator(showProgressIndicator = weatherState.showProgressIndicator)
 }
 
 @Preview
