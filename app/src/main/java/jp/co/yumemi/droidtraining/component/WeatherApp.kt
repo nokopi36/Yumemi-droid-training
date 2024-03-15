@@ -39,7 +39,9 @@ fun WeatherApp(
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                    }
+                    },
+                    date = it.date,
+                    area = it.area,
                 )
             }
             ActionButtons(
@@ -61,6 +63,8 @@ fun WeatherApp(
         onReloadClicked = { weatherAppViewModel.onReloadButtonClicked() },
         onCloseClicked = { weatherAppViewModel.onCloseButtonClicked() }
     )
+
+    ProgressIndicator(showProgressIndicator = weatherState.showProgressIndicator)
 }
 
 @Preview

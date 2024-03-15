@@ -6,10 +6,18 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
+import jp.co.yumemi.droidtraining.data.WeatherRequest
+import jp.co.yumemi.droidtraining.data.WeatherResponse
 import jp.co.yumemi.droidtraining.data.WeatherState
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +33,10 @@ class WeatherAppViewModel @Inject constructor(
             R.drawable.sunny,
             "10",
             "20",
-            false
+            showErrorDialog = false,
+            showProgressIndicator = false,
+            date = "2000-03-06T12:00",
+            area = "ゆめみ",
         )
     )
 
@@ -39,20 +50,38 @@ class WeatherAppViewModel @Inject constructor(
         }
     }
 
-    val onReloadButtonClicked: () -> Unit = {
-        _weatherState.value = try {
-            val weather = yumemiWeather.fetchThrowsWeather()
-            _weatherState.value.copy(
-                weather = WeatherState.weatherMap.getOrDefault(
-                    weather,
-                    R.drawable.dummy
-                ),
-                minTemperature = (-5..10).random().toString(),
-                maxTemperature = (20..30).random().toString(),
-                showErrorDialog = false
-            )
-        } catch (e: UnknownException) {
-            _weatherState.value.copy(showErrorDialog = true)
+    private val exceptionHandler: CoroutineExceptionHandler =
+        CoroutineExceptionHandler { _, throwable ->
+            if (throwable is UnknownException) {
+                _weatherState.update { it.copy(showErrorDialog = true) }
+            }
+        }
+
+    fun onReloadButtonClicked() {
+        viewModelScope.launch(exceptionHandler) {
+            _weatherState.update { it.copy(showErrorDialog = false, showProgressIndicator = true) }
+            val json = WeatherRequest(listOf("東京", "大阪", "広島").random(), "2020-04-01T12:00")
+            val weatherResponse = withContext(Dispatchers.IO) {
+                yumemiWeather.fetchJsonWeatherAsync(
+                    Json.encodeToString(json)
+                )
+            }
+            val weatherData = Json.decodeFromString<WeatherResponse>(weatherResponse)
+            _weatherState.update {
+                it.copy(
+                    weather = WeatherState.weatherMap.getOrDefault(
+                        weatherData.weather,
+                        R.drawable.dummy
+                    ),
+                    minTemperature = weatherData.minTemp.toString(),
+                    maxTemperature = weatherData.maxTemp.toString(),
+                    showErrorDialog = false,
+                    date = weatherData.date,
+                    area = weatherData.area,
+                )
+            }
+        }.invokeOnCompletion {
+            _weatherState.update { it.copy(showProgressIndicator = false) }
         }
     }
 

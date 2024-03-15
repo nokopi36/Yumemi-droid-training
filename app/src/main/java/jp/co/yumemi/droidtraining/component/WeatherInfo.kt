@@ -24,11 +24,19 @@ fun WeatherInfo(
     minTemperature: String,
     maxTemperature: String,
     iconSize: Dp,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    date: String,
+    area: String,
 ) {
     Column(
         modifier = modifier.width(iconSize)
     ) {
+        Text(
+            text = area,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .width(iconSize)
+        )
         Image(
             painter = painterResource(id = weatherIcon),
             contentDescription = "weatherIcon",
@@ -65,7 +73,9 @@ private fun PreviewWeatherInfo() {
             weatherIcon = R.drawable.dummy,
             minTemperature = "10",
             maxTemperature = "20",
-            iconSize = imageSize
+            iconSize = imageSize,
+            date = "2000-03-06T12:00",
+            area = "ゆめみ",
         )
     }
 }
