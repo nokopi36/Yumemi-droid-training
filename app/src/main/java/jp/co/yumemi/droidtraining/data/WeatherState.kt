@@ -11,6 +11,8 @@ data class WeatherState(
     val maxTemperature: String,
     val showErrorDialog: Boolean,
     val showProgressIndicator: Boolean,
+    val date: String,
+    val area: String,
 ) : Parcelable {
     companion object {
         val weatherMap = mapOf(
