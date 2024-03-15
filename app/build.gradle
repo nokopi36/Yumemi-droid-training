@@ -4,6 +4,7 @@ plugins {
     id 'com.google.devtools.ksp'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 android {
@@ -79,5 +80,8 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:2.48"
     ksp "com.google.dagger:hilt-compiler:2.48"
+
+    // kotlin serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
 }
 
